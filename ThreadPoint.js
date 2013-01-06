@@ -27,7 +27,7 @@ define(['ofio/ofio', 'ofio/ofio.model', 'ofio/ofio.cache', 'vendor/underscore'],
 
 
   ThreadPoint.prototype.x = function(){
-    return Math.round((this.n - this.thread.start_point()) * this.thread.width() / this.thread.steps());
+    return Math.round((this.n - this.thread.start_point()) * this.thread.step_width());
   }.cache();
 
 

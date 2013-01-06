@@ -26,8 +26,7 @@ define([
 
 
   var bezier_width = function(){
-    var steps = this.steps();
-    return steps ? this.width() / steps / 2 : 0;
+    return this.step_width() / 2;
   };
 
 
@@ -45,7 +44,7 @@ define([
     var step_width = this.step_width();
     var shown_steps = Math.floor(this.canvas.width / step_width);
     if (shown_steps * step_width < this.canvas.width) {
-      shown_steps = Math.min(shown_steps + 0  , this.all_steps());
+      shown_steps = Math.min(shown_steps + 2, this.all_steps());
     }
 
     return shown_steps;
@@ -83,7 +82,9 @@ define([
 
 
   Thread.prototype.step_width = function(){
-    return this.full_width() / this.all_steps();
+    var steps = this.all_steps();
+    var width = this.full_width();
+    return steps ? width / steps : width;
   }.cache();
 
 
@@ -129,7 +130,7 @@ define([
     ctx.fillStyle = 'rgba(17, 144, 194, 0.2)';
     ctx.beginPath();
     this.draw_surface();
-    ctx.lineTo(this.width(), this.height());
+    ctx.lineTo(this.points[this.end_point()].x(), this.height());
     ctx.lineTo(0, this.height());
     ctx.fill();
   };
@@ -151,7 +152,7 @@ define([
   Thread.prototype.draw_divisions = function(){
     var ctx = this.ctx;
 
-    var step_width = this.width() / this.steps();
+    var step_width = this.step_width();
     if (step_width < 15) return;
     var line_width = ctx.lineWidth = step_width < 100 ? 1 : 2;
     ctx.strokeStyle = 'gray';

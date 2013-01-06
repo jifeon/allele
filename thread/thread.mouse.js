@@ -6,13 +6,16 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
 
   module.init = function(){
     this.k_zoom = 0.95;
+    this.start_x = null;
+    this.start_offset = null;
+
+    this.mousemove = this.mousemove.bind(this);
+    this.mouseup = this.mouseup.bind(this);
   };
 
   module.events = {
     'mousewheel'         : 'mousewheel',
-    'mousedown'          : 'mousedown',
-    'mousemove document' : 'mousemove',
-    'mouseup document'   : 'mouseup'
+    'mousedown'          : 'mousedown'
   };
 
   module.mousewheel = function(e, delta, delta_x, delta_y){
@@ -21,20 +24,28 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
     return false;
   };
 
-  module.mousedown = function(){
+  module.mousedown = function(e){
+    this.start_x = e.pageX;
+    this.start_offset = this.offset;
 
+    $(document)
+      .bind('mousemove', this.mousemove)
+      .bind('mouseup', this.mouseup);
   };
 
-  module.mousemove = function(){
-
+  module.mousemove = function(e){
+    this.offset = this.start_offset + e.pageX - this.start_x;
   };
 
   module.mouseup = function(){
-
+    $(document)
+      .unbind('mousemove', this.mousemove)
+      .unbind('mouseup', this.mouseup);
   };
 
   module.move = function(delta){
-
+    this.offset += delta;
+    this.redraw();
   };
 
   module.resize = function(e, delta){
