@@ -1,3 +1,0 @@
-[submodule "ofio"]
-	path = ofio
-	url = git@github.com:jifeon/ofio.git
