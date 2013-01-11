@@ -1,0 +1,17 @@
+{
+  "name" : "allele",
+  "description" : "",
+  "keywords" : [ "finance" ],
+  "homepage" : "",
+  "version" : "0.0.1",
+  "author" : "Andrey Balakirev <balakirev.andrey@gmail.com>",
+  "contributors" : [],
+  "repository" : {
+    "type" : "git",
+    "url" : "http://github.com/jifeon/allele.git"
+  },
+  "dependencies" : {
+    "autodafe" : ">=0.5.0"
+  },
+  "engines" : { "node": ">=0.8.0" }
+}
