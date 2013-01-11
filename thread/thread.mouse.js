@@ -6,6 +6,9 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
 
   module.init = function(){
     this.k_zoom = 0.95;
+    this.k_move = 20;
+    this.shift_k_move = 8;
+    this.shift_k_zoom = 2;
     this.start_x = null;
     this.start_offset = null;
 
@@ -19,8 +22,16 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
   };
 
   module.mousewheel = function(e, delta, delta_x, delta_y){
-    if (delta_x) this.move(delta_x);
-    if (delta_y) this.resize(e, delta_y);
+    var k;
+    var k_shift = e.shiftKey ? this.k_shift : 1;
+    if (delta_x || e.ctrlKey && delta_y) {
+      k = e.shiftKey ? this.k_move * this.shift_k_move : this.k_move;
+      this.move(delta * k);
+    }
+    else if (delta_y) {
+      k = e.shiftKey ? this.k_zoom / this.shift_k_zoom : this.k_zoom;
+      this.resize(e, delta_y < 0 ? k : 1/k);
+    }
     return false;
   };
 
@@ -34,7 +45,14 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
   };
 
   module.mousemove = function(e){
-    this.offset = this.start_offset + e.pageX - this.start_x;
+    var delta = e.pageX - this.start_x;
+    if (e.shiftKey) delta *= this.shift_k_move;
+    this.offset = this.start_offset + delta;
+
+    this.start_x = e.pageX;
+    this.start_offset = this.offset;
+
+    this.redraw();
   };
 
   module.mouseup = function(){
@@ -48,9 +66,9 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
     this.redraw();
   };
 
-  module.resize = function(e, delta){
+  module.resize = function(e, k){
     var width_before = this.full_width();
-    this.zoom *= delta > 0 ? this.k_zoom : 1 / this.k_zoom;
+    this.zoom *= k;
     var width_after = this.full_width();
     var left = e.pageX - this.offset;
 
