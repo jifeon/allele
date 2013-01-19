@@ -1,5 +1,12 @@
+requirejs.config({
+//  baseUrl: 'js/lib',
+  paths: {
+    sugar: 'sugar/lib'
+  }
+});
+
 requirejs(['Thread', 'Point', 'vendor/jquery.min'], function (Thread, Point) {
-  thread = new Thread({
+  window.thread = new Thread({
     $el: $('canvas')
   });
 
