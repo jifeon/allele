@@ -12,8 +12,8 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
     this.start_x = null;
     this.start_offset = null;
 
-    this.mousemove = this.mousemove.bind(this);
-    this.mouseup = this.mouseup.bind(this);
+    this.mousemove = _.debounce(this.mousemove.bind(this));
+    this.mouseup = _.debounce(this.mouseup.bind(this));
   };
 
   module.events = {
@@ -23,7 +23,6 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
 
   module.mousewheel = function(e, delta, delta_x, delta_y){
     var k;
-    var k_shift = e.shiftKey ? this.k_shift : 1;
     if (delta_x || e.ctrlKey && delta_y) {
       k = e.shiftKey ? this.k_move * this.shift_k_move : this.k_move;
       this.move(delta * k);
