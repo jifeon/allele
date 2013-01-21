@@ -16,9 +16,11 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
     this.mouseup = _.debounce(this.mouseup.bind(this));
   };
 
-  module.events = {
-    'mousewheel'         : 'mousewheel',
-    'mousedown'          : 'mousedown'
+  module.events = function(){
+    return {
+      'mousewheel' : _.debounce(this.mousewheel.bind(this)),
+      'mousedown'  : 'mousedown'
+    };
   };
 
   module.mousewheel = function(e, delta, delta_x, delta_y){
@@ -31,6 +33,7 @@ define(['ofio/ofio', 'vendor/jquery.min', 'vendor/jquery.mousewheel'], function(
       k = e.shiftKey ? this.k_zoom / this.shift_k_zoom : this.k_zoom;
       this.resize(e, delta_y < 0 ? k : 1/k);
     }
+
     return false;
   };
 

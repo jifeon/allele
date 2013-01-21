@@ -12,7 +12,7 @@ define([
 
   MainPage.prototype.db = {
     name      : 'allele',
-    version   : 2,
+    version   : 1,
     versions  : db_versions
   };
 

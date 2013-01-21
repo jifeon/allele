@@ -1,6 +1,6 @@
 define({
   'allele' : {
-    2 : function(idb){
+    1 : function(idb){
       idb.create_store('accounts');
     }
   }
